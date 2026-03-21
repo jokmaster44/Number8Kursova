@@ -1,4 +1,4 @@
-package org.Number8Kursova.uielements.Groupsui;
+package org.Number8Kursova.uielements.GroupsDialog;
 
 import org.Number8Kursova.Manager.DeaneryManager;
 import org.Number8Kursova.Manager.Student;
@@ -9,12 +9,23 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Panel for managing student groups.
+ *
+ * Supports viewing, creating, editing and deleting groups,
+ * as well as assigning students to groups.
+ */
 public class GroupsPanel extends JPanel {
 
     private final DeaneryManager manager;
     private JTable groupsTable;
     private DefaultTableModel tableModel;
 
+    /**
+     * Creates groups management panel.
+     *
+     * @param manager central application manager
+     */
     public GroupsPanel(DeaneryManager manager) {
         this.manager = manager;
         setLayout(new BorderLayout());
@@ -68,6 +79,9 @@ public class GroupsPanel extends JPanel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Opens dialog for creating a new group.
+     */
     private void addGroup() {
         Window window = SwingUtilities.getWindowAncestor(this);
         Frame owner = window instanceof Frame ? (Frame) window : null;
@@ -82,6 +96,9 @@ public class GroupsPanel extends JPanel {
         }
     }
 
+    /**
+     * Opens details dialog for selected group.
+     */
     private void viewSelectedGroup() {
         StudentGroup group = getSelectedGroup();
         if (group == null) {
@@ -95,9 +112,28 @@ public class GroupsPanel extends JPanel {
         dialog.setVisible(true);
     }
 
+    /**
+     * Opens dialog for editing selected group.
+     */
     private void editSelectedGroup() {
-        StudentGroup group = getSelectedGroup();
+        int selectedRow = groupsTable.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Оберіть групу для редагування.",
+                    "Увага",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String oldGroupName = (String) tableModel.getValueAt(selectedRow, 0);
+        StudentGroup group = manager.findGroupByName(oldGroupName);
+
         if (group == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Групу не знайдено.",
+                    "Помилка",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -108,10 +144,14 @@ public class GroupsPanel extends JPanel {
         dialog.setVisible(true);
 
         if (dialog.isSaved()) {
+            manager.updateGroup(oldGroupName, group);
             refreshTable();
         }
     }
 
+    /**
+     * Deletes currently selected group after confirmation.
+     */
     private void deleteSelectedGroup() {
         StudentGroup group = getSelectedGroup();
         if (group == null) {
@@ -131,13 +171,16 @@ public class GroupsPanel extends JPanel {
         refreshTable();
     }
 
+    /**
+     * Assigns a student without group to the selected group.
+     */
     private void addStudentToSelectedGroup() {
         StudentGroup group = getSelectedGroup();
         if (group == null) {
             return;
         }
 
-        List<Student> availableStudents = manager.getAllStudents();
+        List<Student> availableStudents = manager.getStudentsWithoutGroup();
 
         if (availableStudents.isEmpty()) {
             JOptionPane.showMessageDialog(this,
@@ -155,18 +198,23 @@ public class GroupsPanel extends JPanel {
 
         Student selectedStudent = dialog.getSelectedStudent();
         if (selectedStudent != null) {
-            group.addStudent(selectedStudent);
+            manager.assignStudentToGroup(selectedStudent.getId(), group.getName());
             refreshTable();
         }
     }
 
+    /**
+     * Removes a student from the selected group.
+     */
     private void removeStudentFromSelectedGroup() {
         StudentGroup group = getSelectedGroup();
         if (group == null) {
             return;
         }
 
-        if (group.getStudents().isEmpty()) {
+        List<Student> studentsInGroup = manager.getStudentsByGroupName(group.getName());
+
+        if (studentsInGroup.isEmpty()) {
             JOptionPane.showMessageDialog(this,
                     "У групі немає студентів.",
                     "Інформація",
@@ -177,16 +225,21 @@ public class GroupsPanel extends JPanel {
         Window window = SwingUtilities.getWindowAncestor(this);
         Frame owner = window instanceof Frame ? (Frame) window : null;
 
-        RemoveStudentFromGroupDialog dialog = new RemoveStudentFromGroupDialog(owner, group.getStudents());
+        RemoveStudentFromGroupDialog dialog = new RemoveStudentFromGroupDialog(owner, studentsInGroup);
         dialog.setVisible(true);
 
         Student selectedStudent = dialog.getSelectedStudent();
         if (selectedStudent != null) {
-            group.removeStudent(selectedStudent);
+            manager.removeStudentFromGroup(selectedStudent.getId());
             refreshTable();
         }
     }
 
+    /**
+     * Returns currently selected group from the table.
+     *
+     * @return selected group or null if not found
+     */
     private StudentGroup getSelectedGroup() {
         int selectedRow = groupsTable.getSelectedRow();
 
@@ -211,6 +264,9 @@ public class GroupsPanel extends JPanel {
         return group;
     }
 
+    /**
+     * Reloads group data into the table.
+     */
     private void refreshTable() {
         tableModel.setRowCount(0);
 

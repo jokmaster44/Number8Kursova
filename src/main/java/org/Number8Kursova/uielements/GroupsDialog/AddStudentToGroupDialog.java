@@ -1,4 +1,4 @@
-package org.Number8Kursova.uielements;
+package org.Number8Kursova.uielements.GroupsDialog;
 
 import org.Number8Kursova.Manager.Student;
 
@@ -6,13 +6,24 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class EvictStudentDialog extends JDialog {
+/**
+ * Dialog for selecting a student to add to a group.
+ *
+ * Displays a list of available students and allows choosing one.
+ */
+public class AddStudentToGroupDialog extends JDialog {
 
     private JList<Student> studentJList;
     private Student selectedStudent;
 
-    public EvictStudentDialog(Frame owner, List<Student> students) {
-        super(owner, "Виселити студента", true);
+    /**
+     * Creates modal dialog with list of students.
+     *
+     * @param owner parent window
+     * @param students list of students available for selection
+     */
+    public AddStudentToGroupDialog(Frame owner, List<Student> students) {
+        super(owner, "Додати студента до групи", true);
 
         setSize(400, 300);
         setLocationRelativeTo(owner);
@@ -32,13 +43,13 @@ public class EvictStudentDialog extends JDialog {
 
         JPanel buttonPanel = new JPanel();
 
-        JButton evictButton = new JButton("Виселити");
+        JButton addButton = new JButton("Додати");
         JButton cancelButton = new JButton("Скасувати");
 
-        evictButton.addActionListener(e -> selectStudent());
+        addButton.addActionListener(e -> selectStudent());
         cancelButton.addActionListener(e -> dispose());
 
-        buttonPanel.add(evictButton);
+        buttonPanel.add(addButton);
         buttonPanel.add(cancelButton);
 
         add(scrollPane, BorderLayout.CENTER);

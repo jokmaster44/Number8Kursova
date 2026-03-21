@@ -1,16 +1,26 @@
-package org.Number8Kursova.uielements.Room;
+package org.Number8Kursova.uielements.RoomDialog;
 
 import org.Number8Kursova.Manager.ClassRoom;
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Dialog for creating a new dormitory room.
+ *
+ * Allows entering room number and capacity.
+ */
 public class AddRoomDialog extends JDialog {
 
     private JTextField roomNumberField;
     private JTextField capacityField;
     private ClassRoom createdRoom;
 
+    /**
+     * Creates modal dialog for adding a room.
+     *
+     * @param owner parent window
+     */
     public AddRoomDialog(Frame owner) {
         super(owner, "Додати кімнату", true);
 
@@ -47,6 +57,9 @@ public class AddRoomDialog extends JDialog {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Validates input and creates a new room object.
+     */
     private void saveRoom() {
         String roomNumberText = roomNumberField.getText().trim();
         String capacityText = capacityField.getText().trim();
@@ -77,6 +90,11 @@ public class AddRoomDialog extends JDialog {
         dispose();
     }
 
+    /**
+     * Returns created room or null if dialog was cancelled.
+     *
+     * @return created room
+     */
     public ClassRoom getCreatedRoom() {
         return createdRoom;
     }

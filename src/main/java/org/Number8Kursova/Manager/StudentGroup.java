@@ -46,15 +46,4 @@ public class StudentGroup {
         this.specialty = specialty;
     }
 
-    public void addStudent(Student student) {
-        if (!students.contains(student)) {
-            students.add(student);
-            student.setGroupName(name);
-        }
-    }
-
-    public void removeStudent(Student student) {
-        students.remove(student);
-        student.setGroupName("");
-    }
 }

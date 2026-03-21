@@ -1,27 +1,40 @@
-package org.Number8Kursova.uielements.Groupsui;
+package org.Number8Kursova.uielements.GroupsDialog;
 
 import org.Number8Kursova.Manager.StudentGroup;
 
 import javax.swing.*;
 import java.awt.*;
 
-
-public class AddGroupDialog extends JDialog {
+/**
+ * Dialog for editing an existing student group.
+ *
+ * Displays current group data and allows modifying it.
+ */
+public class EditGroupDialog extends JDialog {
 
     private JTextField nameField;
     private JTextField courseField;
     private JTextField specialtyField;
 
-    private StudentGroup createdGroup;
+    private boolean saved = false;
+    private final StudentGroup group;
 
-    public AddGroupDialog(Frame owner) {
-        super(owner, "Додати групу", true);
+    /**
+     * Creates modal dialog for editing group data.
+     *
+     * @param owner parent window
+     * @param group group to edit
+     */
+    public EditGroupDialog(Frame owner, StudentGroup group) {
+        super(owner, "Редагувати групу", true);
+        this.group = group;
 
         setSize(400, 250);
         setLocationRelativeTo(owner);
         setLayout(new BorderLayout());
 
         initComponents();
+        fillFields();
     }
 
     private void initComponents() {
@@ -44,7 +57,7 @@ public class AddGroupDialog extends JDialog {
         JButton saveButton = new JButton("Зберегти");
         JButton cancelButton = new JButton("Скасувати");
 
-        saveButton.addActionListener(e -> saveGroup());
+        saveButton.addActionListener(e -> saveChanges());
         cancelButton.addActionListener(e -> dispose());
 
         buttonPanel.add(saveButton);
@@ -54,7 +67,21 @@ public class AddGroupDialog extends JDialog {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
-    private void saveGroup() {
+    /**
+     * Fills input fields with current group data.
+     */
+    private void fillFields() {
+        nameField.setText(group.getName());
+        courseField.setText(String.valueOf(group.getCourse()));
+        specialtyField.setText(group.getSpecialty());
+    }
+
+    /**
+     * Validates input and applies changes to the group.
+     *
+     * If validation fails, an error message is shown.
+     */
+    private void saveChanges() {
         String name = nameField.getText().trim();
         String courseText = courseField.getText().trim();
         String specialty = specialtyField.getText().trim();
@@ -78,11 +105,20 @@ public class AddGroupDialog extends JDialog {
             return;
         }
 
-        createdGroup = new StudentGroup(name, course, specialty);
+        group.setName(name);
+        group.setCourse(course);
+        group.setSpecialty(specialty);
+
+        saved = true;
         dispose();
     }
 
-    public StudentGroup getCreatedGroup() {
-        return createdGroup;
+    /**
+     * Indicates whether changes were confirmed by the user.
+     *
+     * @return true if group was saved
+     */
+    public boolean isSaved() {
+        return saved;
     }
 }

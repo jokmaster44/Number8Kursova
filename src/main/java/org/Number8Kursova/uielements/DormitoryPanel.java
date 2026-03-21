@@ -3,22 +3,32 @@ package org.Number8Kursova.uielements;
 import org.Number8Kursova.Manager.ClassRoom;
 import org.Number8Kursova.Manager.DeaneryManager;
 import org.Number8Kursova.Manager.Student;
-import org.Number8Kursova.uielements.Room.AddRoomDialog;
-import org.Number8Kursova.uielements.Room.EditRoomDialog;
-import org.Number8Kursova.uielements.Room.RoomDetailsDialog;
-import org.Number8Kursova.uielements.Room.SettleStudentDialog;
-
+import org.Number8Kursova.uielements.RoomDialog.AddRoomDialog;
+import org.Number8Kursova.uielements.RoomDialog.EditRoomDialog;
+import org.Number8Kursova.uielements.RoomDialog.RoomDetailsDialog;
+import org.Number8Kursova.uielements.RoomDialog.SettleStudentDialog;
+import org.Number8Kursova.uielements.RoomDialog.EvictStudentDialog;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
+/**
+ * Panel for managing dormitory rooms and student settlement.
+ *
+ * Supports room operations, settlement, eviction and viewing room details.
+ */
 public class DormitoryPanel extends JPanel {
 
     private final DeaneryManager manager;
     private JTable roomsTable;
     private DefaultTableModel tableModel;
 
+    /**
+     * Creates dormitory management panel.
+     *
+     * @param manager central application manager
+     */
     public DormitoryPanel(DeaneryManager manager) {
         this.manager = manager;
         setLayout(new BorderLayout());
@@ -70,6 +80,9 @@ public class DormitoryPanel extends JPanel {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Opens dialog for creating a new room.
+     */
     private void addRoom() {
         Window window = SwingUtilities.getWindowAncestor(this);
         Frame owner = window instanceof Frame ? (Frame) window : null;
@@ -84,6 +97,9 @@ public class DormitoryPanel extends JPanel {
         }
     }
 
+    /**
+     * Opens details dialog for selected room.
+     */
     private void viewSelectedRoom() {
         ClassRoom room = getSelectedRoom();
         if (room == null) {
@@ -97,9 +113,28 @@ public class DormitoryPanel extends JPanel {
         dialog.setVisible(true);
     }
 
+    /**
+     * Opens dialog for editing selected room.
+     */
     private void editSelectedRoom() {
-        ClassRoom room = getSelectedRoom();
+        int selectedRow = roomsTable.getSelectedRow();
+
+        if (selectedRow == -1) {
+            JOptionPane.showMessageDialog(this,
+                    "Оберіть кімнату для редагування.",
+                    "Увага",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        int oldRoomNumber = (int) tableModel.getValueAt(selectedRow, 0);
+        ClassRoom room = manager.findRoomByNumber(oldRoomNumber);
+
         if (room == null) {
+            JOptionPane.showMessageDialog(this,
+                    "Кімнату не знайдено.",
+                    "Помилка",
+                    JOptionPane.ERROR_MESSAGE);
             return;
         }
 
@@ -110,10 +145,14 @@ public class DormitoryPanel extends JPanel {
         dialog.setVisible(true);
 
         if (dialog.isSaved()) {
+            manager.updateRoom(oldRoomNumber, room);
             refreshTable();
         }
     }
 
+    /**
+     * Deletes selected room after confirmation.
+     */
     private void deleteSelectedRoom() {
         ClassRoom room = getSelectedRoom();
         if (room == null) {
@@ -133,6 +172,9 @@ public class DormitoryPanel extends JPanel {
         refreshTable();
     }
 
+    /**
+     * Settles selected student into selected room.
+     */
     private void settleStudentToRoom() {
         ClassRoom room = getSelectedRoom();
         if (room == null) {
@@ -170,6 +212,9 @@ public class DormitoryPanel extends JPanel {
         }
     }
 
+    /**
+     * Opens dialog for evicting a student from dormitory.
+     */
     private void evictStudentFromRoom() {
         List<Student> dormitoryStudents = manager.getDormitoryStudents();
 
@@ -184,7 +229,7 @@ public class DormitoryPanel extends JPanel {
         Window window = SwingUtilities.getWindowAncestor(this);
         Frame owner = window instanceof Frame ? (Frame) window : null;
 
-        org.Number8Kursova.uielements.EvictStudentDialog dialog = new org.Number8Kursova.uielements.EvictStudentDialog(owner, dormitoryStudents);
+        EvictStudentDialog dialog = new EvictStudentDialog(owner, dormitoryStudents);
         dialog.setVisible(true);
 
         Student selectedStudent = dialog.getSelectedStudent();
@@ -194,6 +239,11 @@ public class DormitoryPanel extends JPanel {
         }
     }
 
+    /**
+     * Returns currently selected room from the table.
+     *
+     * @return selected room or null if not found
+     */
     private ClassRoom getSelectedRoom() {
         int selectedRow = roomsTable.getSelectedRow();
 
@@ -218,6 +268,9 @@ public class DormitoryPanel extends JPanel {
         return room;
     }
 
+    /**
+     * Reloads room data into the table.
+     */
     private void refreshTable() {
         tableModel.setRowCount(0);
 

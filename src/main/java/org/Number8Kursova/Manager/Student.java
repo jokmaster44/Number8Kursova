@@ -1,7 +1,12 @@
 package org.Number8Kursova.Manager;
 
-
+/**
+ * Represents a student of the educational institution.
+ *
+ * Contains personal data, group assignment and dormitory status.
+ */
 public class Student {
+
     private int id;
     private int age;
     private int roomNumber;
@@ -24,12 +29,9 @@ public class Student {
         this.livingInDormitory = false;
         this.roomNumber = -1;
     }
+
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getFirstName() {
@@ -72,6 +74,11 @@ public class Student {
         this.gender = gender;
     }
 
+    /**
+     * Returns assigned group name.
+     *
+     * @return group name or empty/null if not assigned
+     */
     public String getGroupName() {
         return groupName;
     }
@@ -80,6 +87,11 @@ public class Student {
         this.groupName = groupName;
     }
 
+    /**
+     * Indicates whether student lives in dormitory.
+     *
+     * @return true if student is settled in dormitory
+     */
     public boolean isLivingInDormitory() {
         return livingInDormitory;
     }
@@ -88,6 +100,11 @@ public class Student {
         this.livingInDormitory = livingInDormitory;
     }
 
+    /**
+     * Returns dormitory room number.
+     *
+     * @return room number or -1 if not assigned
+     */
     public int getRoomNumber() {
         return roomNumber;
     }
@@ -96,13 +113,13 @@ public class Student {
         this.roomNumber = roomNumber;
     }
 
-    public String getFullName() {
-        return lastName + " " + firstName + " " + middleName;
-    }
-
+    /**
+     * Returns short textual representation of student.
+     *
+     * Used in lists and dialogs.
+     */
     @Override
     public String toString() {
         return lastName + " " + firstName + " " + middleName + " (ID: " + id + ")";
     }
 }
-

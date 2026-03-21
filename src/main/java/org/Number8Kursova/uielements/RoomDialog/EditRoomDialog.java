@@ -1,10 +1,15 @@
-package org.Number8Kursova.uielements.Room;
+package org.Number8Kursova.uielements.RoomDialog;
 
 import org.Number8Kursova.Manager.ClassRoom;
 
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Dialog for editing room data.
+ *
+ * Displays current room values and allows changing them.
+ */
 public class EditRoomDialog extends JDialog {
 
     private JTextField roomNumberField;
@@ -13,6 +18,12 @@ public class EditRoomDialog extends JDialog {
     private boolean saved = false;
     private final ClassRoom room;
 
+    /**
+     * Creates modal dialog for editing a room.
+     *
+     * @param owner parent window
+     * @param room room to edit
+     */
     public EditRoomDialog(Frame owner, ClassRoom room) {
         super(owner, "Редагувати кімнату", true);
         this.room = room;
@@ -51,11 +62,17 @@ public class EditRoomDialog extends JDialog {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Fills input fields with current room data.
+     */
     private void fillFields() {
         roomNumberField.setText(String.valueOf(room.getRoomNumber()));
         capacityField.setText(String.valueOf(room.getCapacity()));
     }
 
+    /**
+     * Validates input and applies changes to the room.
+     */
     private void saveChanges() {
         String roomNumberText = roomNumberField.getText().trim();
         String capacityText = capacityField.getText().trim();
@@ -89,6 +106,11 @@ public class EditRoomDialog extends JDialog {
         dispose();
     }
 
+    /**
+     * Indicates whether user confirmed changes.
+     *
+     * @return true if room was saved
+     */
     public boolean isSaved() {
         return saved;
     }

@@ -1,4 +1,4 @@
-package org.Number8Kursova.uielements.StudentsUi;
+package org.Number8Kursova.uielements.StudentsDialog;
 
 import org.Number8Kursova.Manager.Student;
 
