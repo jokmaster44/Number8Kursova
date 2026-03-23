@@ -1,4 +1,4 @@
-package org.Number8Kursova.uielements;
+package org.Number8Kursova.uielements.RoomDialog;
 
 import org.Number8Kursova.Manager.Student;
 
@@ -6,11 +6,23 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+
+/**
+ * Dialog for selecting a student to evict from dormitory.
+ *
+ * Shows students currently living in dormitory.
+ */
 public class EvictStudentDialog extends JDialog {
 
     private JList<Student> studentJList;
     private Student selectedStudent;
 
+    /**
+     * Creates modal dialog with dormitory residents.
+     *
+     * @param owner parent window
+     * @param students students available for eviction
+     */
     public EvictStudentDialog(Frame owner, List<Student> students) {
         super(owner, "Виселити студента", true);
 
@@ -45,6 +57,9 @@ public class EvictStudentDialog extends JDialog {
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Stores selected student and closes dialog.
+     */
     private void selectStudent() {
         selectedStudent = studentJList.getSelectedValue();
 
@@ -59,6 +74,11 @@ public class EvictStudentDialog extends JDialog {
         dispose();
     }
 
+    /**
+     * Returns chosen student or null if dialog was cancelled.
+     *
+     * @return selected student
+     */
     public Student getSelectedStudent() {
         return selectedStudent;
     }

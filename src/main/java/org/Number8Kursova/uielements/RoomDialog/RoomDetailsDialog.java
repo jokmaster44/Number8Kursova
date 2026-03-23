@@ -1,4 +1,4 @@
-package org.Number8Kursova.uielements.Room;
+package org.Number8Kursova.uielements.RoomDialog;
 
 import org.Number8Kursova.Manager.ClassRoom;
 import org.Number8Kursova.Manager.Student;
@@ -6,8 +6,20 @@ import org.Number8Kursova.Manager.Student;
 import javax.swing.*;
 import java.awt.*;
 
+
+/**
+ * Dialog displaying detailed information about a room.
+ *
+ * Shows room data and current residents.
+ */
 public class RoomDetailsDialog extends JDialog {
 
+    /**
+     * Creates modal dialog with room details.
+     *
+     * @param owner parent window
+     * @param room room to display
+     */
     public RoomDetailsDialog(Frame owner, ClassRoom room) {
         super(owner, "Дані кімнати", true);
 
@@ -18,6 +30,11 @@ public class RoomDetailsDialog extends JDialog {
         initComponents(room);
     }
 
+    /**
+     * Builds UI components and fills them with room data.
+     *
+     * @param room room to display
+     */
     private void initComponents(ClassRoom room) {
         JPanel infoPanel = new JPanel(new GridLayout(0, 1, 5, 5));
 
@@ -28,7 +45,11 @@ public class RoomDetailsDialog extends JDialog {
 
         DefaultListModel<String> listModel = new DefaultListModel<>();
         for (Student student : room.getResidents()) {
-            listModel.addElement(student.getLastName() + " " + student.getFirstName() + " " + student.getMiddleName());
+            listModel.addElement(
+                    student.getLastName() + " " +
+                            student.getFirstName() + " " +
+                            student.getMiddleName()
+            );
         }
 
         JList<String> residentsList = new JList<>(listModel);

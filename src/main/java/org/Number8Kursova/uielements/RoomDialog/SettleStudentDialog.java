@@ -1,4 +1,4 @@
-package org.Number8Kursova.uielements.Groupsui;
+package org.Number8Kursova.uielements.RoomDialog;
 
 import org.Number8Kursova.Manager.Student;
 
@@ -6,13 +6,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
-public class AddStudentToGroupDialog extends JDialog {
+
+/**
+ * Dialog for selecting a student to settle in a room.
+ *
+ * Displays students available for dormitory settlement.
+ */
+public class SettleStudentDialog extends JDialog {
 
     private JList<Student> studentJList;
     private Student selectedStudent;
 
-    public AddStudentToGroupDialog(Frame owner, List<Student> students) {
-        super(owner, "Додати студента до групи", true);
+    /**
+     * Creates modal dialog with list of students.
+     *
+     * @param owner parent window
+     * @param students students available for settlement
+     */
+    public SettleStudentDialog(Frame owner, List<Student> students) {
+        super(owner, "Поселити студента", true);
 
         setSize(400, 300);
         setLocationRelativeTo(owner);
@@ -32,19 +44,22 @@ public class AddStudentToGroupDialog extends JDialog {
 
         JPanel buttonPanel = new JPanel();
 
-        JButton addButton = new JButton("Додати");
+        JButton settleButton = new JButton("Поселити");
         JButton cancelButton = new JButton("Скасувати");
 
-        addButton.addActionListener(e -> selectStudent());
+        settleButton.addActionListener(e -> selectStudent());
         cancelButton.addActionListener(e -> dispose());
 
-        buttonPanel.add(addButton);
+        buttonPanel.add(settleButton);
         buttonPanel.add(cancelButton);
 
         add(scrollPane, BorderLayout.CENTER);
         add(buttonPanel, BorderLayout.SOUTH);
     }
 
+    /**
+     * Stores selected student and closes dialog.
+     */
     private void selectStudent() {
         selectedStudent = studentJList.getSelectedValue();
 
@@ -59,6 +74,11 @@ public class AddStudentToGroupDialog extends JDialog {
         dispose();
     }
 
+    /**
+     * Returns chosen student or null if dialog was cancelled.
+     *
+     * @return selected student
+     */
     public Student getSelectedStudent() {
         return selectedStudent;
     }

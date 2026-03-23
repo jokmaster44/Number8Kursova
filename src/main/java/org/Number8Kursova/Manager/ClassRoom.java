@@ -3,12 +3,23 @@ package org.Number8Kursova.Manager;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Represents a dormitory room.
+ *
+ * Stores room number, capacity and list of current residents.
+ */
 public class ClassRoom {
+
     private int roomNumber;
     private int capacity;
     private List<Student> residents;
 
+    /**
+     * Creates a new room with given number and capacity.
+     *
+     * @param roomNumber room identifier
+     * @param capacity maximum number of residents
+     */
     public ClassRoom(int roomNumber, int capacity) {
         this.roomNumber = roomNumber;
         this.capacity = capacity;
@@ -31,33 +42,30 @@ public class ClassRoom {
         this.capacity = capacity;
     }
 
+    /**
+     * Returns current residents of the room.
+     *
+     * @return list of students living in the room
+     */
     public List<Student> getResidents() {
         return residents;
     }
 
+    /**
+     * Checks whether the room still has free places.
+     *
+     * @return true if capacity is not reached
+     */
     public boolean hasFreeSpace() {
         return residents.size() < capacity;
     }
 
+    /**
+     * Calculates number of available places.
+     *
+     * @return free places count
+     */
     public int getFreePlaces() {
         return capacity - residents.size();
     }
-
-    public boolean addResident(Student student) {
-        if (!hasFreeSpace()) {
-            return false;
-        }
-
-        residents.add(student);
-        student.setLivingInDormitory(true);
-        student.setRoomNumber(roomNumber);
-        return true;
-    }
-
-    public void removeResident(Student student) {
-        residents.remove(student);
-        student.setLivingInDormitory(false);
-        student.setRoomNumber(-1);
-    }
-
 }

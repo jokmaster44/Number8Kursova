@@ -8,6 +8,13 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.List;
 
+
+/**
+ * Panel for searching students by different criteria.
+ *
+ * Supports search by name, group, dormitory residents
+ * and displaying all students.
+ */
 public class SearchPanel extends JPanel {
 
     private final DeaneryManager manager;
@@ -15,6 +22,11 @@ public class SearchPanel extends JPanel {
     private JTable resultTable;
     private DefaultTableModel tableModel;
 
+    /**
+     * Creates search panel.
+     *
+     * @param manager central application manager
+     */
     public SearchPanel(DeaneryManager manager) {
         this.manager = manager;
         setLayout(new BorderLayout());
@@ -24,7 +36,6 @@ public class SearchPanel extends JPanel {
 
     private void initComponents() {
 
-        // ===== Верхняя панель =====
         JPanel topPanel = new JPanel();
 
         JLabel searchLabel = new JLabel("Пошук:");
@@ -47,7 +58,6 @@ public class SearchPanel extends JPanel {
         topPanel.add(searchDormitoryButton);
         topPanel.add(showAllButton);
 
-        // ===== Таблица =====
         String[] columns = {
                 "ID", "Прізвище", "Ім'я", "По батькові",
                 "Вік", "Стать", "Група", "Кімната"
@@ -67,8 +77,9 @@ public class SearchPanel extends JPanel {
         add(scrollPane, BorderLayout.CENTER);
     }
 
-    // ===== Методы поиска =====
-
+    /**
+     * Searches students by first or last name.
+     */
     private void searchByName() {
         String text = searchField.getText().trim();
 
@@ -93,6 +104,9 @@ public class SearchPanel extends JPanel {
         }
     }
 
+    /**
+     * Searches students by group name.
+     */
     private void searchByGroup() {
         String group = searchField.getText().trim();
 
@@ -113,6 +127,9 @@ public class SearchPanel extends JPanel {
         }
     }
 
+    /**
+     * Displays students living in dormitory.
+     */
     private void showDormitoryStudents() {
         List<Student> students = manager.getDormitoryStudents();
 
@@ -123,6 +140,9 @@ public class SearchPanel extends JPanel {
         }
     }
 
+    /**
+     * Displays all students.
+     */
     private void showAllStudents() {
         List<Student> students = manager.getAllStudents();
 
@@ -133,12 +153,18 @@ public class SearchPanel extends JPanel {
         }
     }
 
-    // ===== Вспомогательные методы =====
-
+    /**
+     * Clears result table.
+     */
     private void clearTable() {
         tableModel.setRowCount(0);
     }
 
+    /**
+     * Adds student data as a new row in the table.
+     *
+     * @param student student to display
+     */
     private void addStudentToTable(Student student) {
         Object roomValue = student.getRoomNumber() == -1
                 ? "-"
