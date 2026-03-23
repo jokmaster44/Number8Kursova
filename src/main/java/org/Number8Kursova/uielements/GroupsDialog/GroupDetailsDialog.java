@@ -6,11 +6,13 @@ import org.Number8Kursova.Manager.StudentGroup;
 import javax.swing.*;
 import java.awt.*;
 
+
 /**
  * Dialog displaying detailed information about a student group.
  *
  * Shows basic group data and the list of students in the group.
  */
+
 public class GroupDetailsDialog extends JDialog {
 
     /**

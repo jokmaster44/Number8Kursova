@@ -5,11 +5,13 @@ import org.Number8Kursova.Manager.StudentGroup;
 import javax.swing.*;
 import java.awt.*;
 
+
 /**
  * Dialog for editing an existing student group.
  *
  * Displays current group data and allows modifying it.
  */
+
 public class EditGroupDialog extends JDialog {
 
     private JTextField nameField;

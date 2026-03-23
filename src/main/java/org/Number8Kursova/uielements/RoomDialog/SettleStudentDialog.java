@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.List;
 
+
 /**
  * Dialog for selecting a student to settle in a room.
  *

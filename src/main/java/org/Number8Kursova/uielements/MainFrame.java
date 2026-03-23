@@ -7,6 +7,7 @@ import org.Number8Kursova.uielements.StudentsDialog.StudentsPanel;
 import javax.swing.*;
 import java.awt.*;
 
+
 /**
  * Main application window.
  *

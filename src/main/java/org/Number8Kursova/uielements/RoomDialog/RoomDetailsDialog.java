@@ -6,6 +6,7 @@ import org.Number8Kursova.Manager.Student;
 import javax.swing.*;
 import java.awt.*;
 
+
 /**
  * Dialog displaying detailed information about a room.
  *

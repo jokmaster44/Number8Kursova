@@ -5,6 +5,7 @@ import org.Number8Kursova.Manager.StudentGroup;
 import javax.swing.*;
 import java.awt.*;
 
+
 /**
  * Dialog window for creating a new student group.
  *

@@ -5,6 +5,7 @@ import org.Number8Kursova.Manager.ClassRoom;
 import javax.swing.*;
 import java.awt.*;
 
+
 /**
  * Dialog for creating a new dormitory room.
  *
