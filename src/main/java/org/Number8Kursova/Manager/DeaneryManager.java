@@ -43,23 +43,22 @@ public class DeaneryManager {
      */
     public void addStudent(Student student) {
         String sql = """
-                INSERT INTO students
-                (id, first_name, last_name, middle_name, age, gender, group_name, living_in_dormitory, room_number)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-                """;
+            INSERT INTO students 
+            (first_name, last_name, middle_name, age, gender, group_name, living_in_dormitory, room_number)
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+            """;
 
         try (Connection connection = DatabaseManager.connect();
              PreparedStatement ps = connection.prepareStatement(sql)) {
 
-            ps.setInt(1, student.getId());
-            ps.setString(2, student.getFirstName());
-            ps.setString(3, student.getLastName());
-            ps.setString(4, student.getMiddleName());
-            ps.setInt(5, student.getAge());
-            ps.setString(6, student.getGender());
-            ps.setString(7, student.getGroupName());
-            ps.setInt(8, student.isLivingInDormitory() ? 1 : 0);
-            ps.setInt(9, student.getRoomNumber());
+            ps.setString(1, student.getFirstName());
+            ps.setString(2, student.getLastName());
+            ps.setString(3, student.getMiddleName());
+            ps.setInt(4, student.getAge());
+            ps.setString(5, student.getGender());
+            ps.setString(6, student.getGroupName());
+            ps.setInt(7, student.isLivingInDormitory() ? 1 : 0);
+            ps.setInt(8, student.getRoomNumber());
 
             ps.executeUpdate();
 

@@ -49,7 +49,15 @@ public class StudentsPanel extends JPanel {
         JButton refreshButton = new JButton("Оновити");
 
         addButton.addActionListener(e -> addStudent());
-        editButton.addActionListener(e -> editSelectedStudent());
+
+        editButton.addActionListener(e -> {
+            if (studentsTable.isEditing()) {
+                studentsTable.getCellEditor().stopCellEditing();
+            }
+
+            editSelectedStudent();
+        });
+
         deleteButton.addActionListener(e -> deleteSelectedStudent());
         refreshButton.addActionListener(e -> refreshTable());
 
@@ -134,6 +142,7 @@ public class StudentsPanel extends JPanel {
         dialog.setVisible(true);
 
         if (dialog.isSaved()) {
+            manager.updateStudent(student);
             refreshTable();
         }
     }
